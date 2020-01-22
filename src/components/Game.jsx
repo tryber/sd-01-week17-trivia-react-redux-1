@@ -14,6 +14,29 @@ class Game extends React.Component {
     return newArray;
   }
 
+  static generateAnswers(question) {
+    const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
+      <label key={answer} htmlFor={answer}>
+        <input
+          type="radio"
+          id={answer}
+          value={answer}
+          name="answer"
+          data-testid={`wrong-answer-${index}`}
+        />
+        {answer}
+      </label>
+    ));
+    const correctAnswer = (
+      <label key={question.correct_answer} htmlFor={question.correct_answer}>
+        <input type="radio" name="answer" data-testid="correct-awnser" />
+        {question.correct_answer}
+      </label>
+    );
+    const allAnswers = [...incorrectAnswers, correctAnswer];
+    return Game.shuffleArray(allAnswers);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -38,36 +61,11 @@ class Game extends React.Component {
             <p className="question-category">{question.category}</p>
             <p className="question-text">{question.question}</p>
           </div>
-          <div>{this.generateAnswers(question)}</div>
+          <div>{Game.generateAnswers(question)}</div>
         </div>
       );
     }
     return 'Loading questions...';
-  }
-
-  generateAnswers(question) {
-    const incorrectAnswers = question.incorrect_answers.map((answer, index) => {
-      return (
-        <label key={answer} htmlFor={answer}>
-          <input
-            type="radio"
-            id={answer}
-            value={answer}
-            name="answer"
-            data-testid={`wrong-answer-${index}`}
-          />
-          {answer}
-        </label>
-      );
-    });
-    const correctAnswer = (
-      <label key={question.correct_answer} htmlFor={question.correct_answer}>
-        <input type="radio" name="answer" data-testid="correct-awnser" />
-        {question.correct_answer}
-      </label>
-    );
-    const allAnswers = [...incorrectAnswers, correctAnswer];
-    return Game.shuffleArray(allAnswers);
   }
 
   render() {
