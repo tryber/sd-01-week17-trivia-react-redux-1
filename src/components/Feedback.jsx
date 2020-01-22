@@ -1,6 +1,6 @@
 import React from 'react';
-import '../css/Feedback.css';
 import PropTypes from 'prop-types';
+import '../css/Feedback.css';
 // import Header from './games/Header'
 // let valor = {
 //   name: 'douglas',
@@ -54,9 +54,14 @@ function Feedback() {
   );
 }
 
+// Feedback.propTypes = {
+//   textFeedbackScore: PropTypes.func.isRequired,
+//   textFeedbackAssertions: PropTypes.func.isRequired,
+// };
+
 Feedback.propTypes = {
-  textFeedbackScore: PropTypes.func.isRequired,
-  textFeedbackAssertions: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default Feedback;
