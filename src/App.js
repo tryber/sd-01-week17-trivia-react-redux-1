@@ -1,19 +1,16 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-// import logo from './trivia.png';
-// import './App.css';
-import Ranking from './components/Ranking';
-
 import Home from './components/Home';
-// import Configurations from "./components/Configurations";
+import Configurations from './components/Configurations';
+import Game from './components/Game';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Home} />
-        {/* <Route path="/configurations" component={Configurations}></Route> */}
-        {/* <Route path="/game" component={Game}></Route> */}
+        <Route path="/configurations" component={Configurations} />
+        <Route path="/game" component={Game} />
         {/* <Route></Route> feedbacks */}
         <Route exact path="/game" component={Ranking} />
       </Switch>
