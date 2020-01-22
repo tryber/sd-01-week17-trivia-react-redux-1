@@ -4,9 +4,6 @@ import '../css/home.css';
 import getTokenTriviaAPI from '../service/APIService';
 
 class Home extends React.Component {
-  componentDidMount() {
-    getTokenTriviaAPI();
-  }
   static sendPlayerToLocalStorage(name, gravatarEmail) {
     const player = {
       name,
@@ -24,6 +21,9 @@ class Home extends React.Component {
       gravatarEmail: '',
       name: '',
     };
+  }
+  componentDidMount() {
+    getTokenTriviaAPI();
   }
 
   startGame() {

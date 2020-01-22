@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
-import Configurations from "./components/Configurations";
+import Configurations from './components/Configurations';
 import Game from './components/Game';
 
 export default function App() {
