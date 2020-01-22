@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
-import '../css/home.css';
+import '../css/Home.css';
 import getTokenTriviaAPI from '../service/APIService';
 
 class Home extends React.Component {
