@@ -1,10 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Header from './Header';
 import { connect } from 'react-redux';
+import Header from './Header';
 import { loadData } from '../actions';
 
 class Game extends React.Component {
+  static shuffleArray(array) {
+    const newArray = array;
+    for (let i = array.length - 1; i > 0; i -= 1) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+    }
+    return newArray;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -36,14 +45,6 @@ class Game extends React.Component {
     return 'Loading questions...';
   }
 
-  shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
   generateAnswers(question) {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => {
       return (
@@ -66,7 +67,7 @@ class Game extends React.Component {
       </label>
     );
     const allAnswers = [...incorrectAnswers, correctAnswer];
-    return this.shuffleArray(allAnswers);
+    return Game.shuffleArray(allAnswers);
   }
 
   render() {
