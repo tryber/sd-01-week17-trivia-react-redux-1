@@ -4,6 +4,9 @@ import '../css/home.css';
 import getTokenTriviaAPI from '../service/APIService';
 
 class Home extends React.Component {
+  componentDidMount() {
+    getTokenTriviaAPI();
+  }
   static sendPlayerToLocalStorage(name, gravatarEmail) {
     const player = {
       name,
@@ -26,7 +29,6 @@ class Home extends React.Component {
   startGame() {
     const { gravatarEmail, name } = this.state;
     if (gravatarEmail !== '' && name !== '') {
-      getTokenTriviaAPI();
       Home.sendPlayerToLocalStorage(name, gravatarEmail);
       return this.setState({
         shouldRedirect: true,
