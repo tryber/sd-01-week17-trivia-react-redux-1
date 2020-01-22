@@ -1,8 +1,6 @@
-import React, { Component } from 'react'  ;
-import '../../css/Header.css';
+import React, { Component } from 'react';
 import MD5 from 'crypto-js/md5';
-
-
+import '../../css/Header.css';
 
 class Header extends Component {
   render(){

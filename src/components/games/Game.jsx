@@ -4,11 +4,11 @@ import Header from './Header';
 
 
 class Game extends Component {
-  render(){
-    return(
+  render() {
+    return (
       <Header />
-    );  
+    );
   }
 }
 
-export default Game
+export default Game;
