@@ -15,7 +15,7 @@ export default function App() {
         {/* <Route path="/configurations" component={Configurations}></Route> */}
         {/* <Route path="/game" component={Game}></Route> */}
         {/* <Route></Route> feedbacks */}
-        <Route exact path="/game" component={Ranking}></Route>
+        <Route exact path="/game" component={Ranking} />
       </Switch>
     </BrowserRouter>
   );

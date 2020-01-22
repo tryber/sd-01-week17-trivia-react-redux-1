@@ -1,11 +1,10 @@
 div {
-  color: black;
   background: white;
+  color: black;
   display: flex;
   flex-direction: column;
   height: 474px;
   padding: 1em;
-  
   width: 792px;
 }
 
