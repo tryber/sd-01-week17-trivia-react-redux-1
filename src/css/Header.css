@@ -1,30 +1,30 @@
 .header {
   align-items: center;
-	background-color: #c4c4c4;
-	display: flex;
-	flex-direction: row;
-	height: 10%;
-	width: 100%;
+  background-color: #c4c4c4;
+  display: flex;
+  flex-direction: row;
+  height: 10%; 
+  width: 100%;
 }
 
 .player {
-	color: #000;
-	font-size: 26px;
-	line-height: 30px;
+  color: black;
+  font-size: 26px;
+  line-height: 30px;
 }
 
 .content-palyer {
-	color: blueviolet;
-	display: flex;
-	flex-direction: row;
-	justify-content: flex-start;
-	width: 30%;
+  color: blueviolet;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  width: 30%;
 }
 
 .img-avatar {
-	border-radius: 100%;
-	color: yellow;
-	height: 50px;
-	padding: 10px;
-	width: 50px;
+  border-radius: 100%;
+  color: yellow;
+  height: 50px;
+  padding: 10px;
+  width: 50px;
 }
