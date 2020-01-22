@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Game from './components/games/Game';
 import Configurations from './components/Configurations';
 import Ranking from './components/Ranking';
+import Feedback from './components/Feedback';
 
 export default function App() {
   return (

@@ -1,3 +1,21 @@
 div {
-  color: white;
+  text-align: center;
+  margin: 0 auto;
+  padding: 2em;
+}
+
+.btn-Ranking {
+  background: #b5b8b4;
+  font-size: 2em;
+  height: 83px;
+  margin-top: 1em;
+  width: 444px;
+}
+
+.btn-jogarNovamente {
+  background: #86d660;
+  font-size: 2em;
+  height: 83px;
+  margin-top: 1em;
+  width: 444px;
 }
