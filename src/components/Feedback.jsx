@@ -60,8 +60,8 @@ function Feedback() {
 // };
 
 Feedback.propTypes = {
-  score: PropTypes.number.isRequired,
-  assertions: PropTypes.number.isRequired,
+  score: PropTypes.number,
+  assertions: PropTypes.number,
 };
 
 export default Feedback;
