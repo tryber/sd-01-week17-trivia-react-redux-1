@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
-import Game from './components/games/Game';
+import Game from './components/Game';
 import Configurations from './components/Configurations';
 import Ranking from './components/Ranking';
 
