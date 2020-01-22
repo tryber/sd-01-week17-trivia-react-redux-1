@@ -4,16 +4,17 @@ import Home from './components/Home';
 import Configurations from './components/Configurations';
 import Ranking from './components/Ranking';
 import Game from './components/Game';
+import Feedback from './components/Feedback';
 
 export default function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/configurations" component={Configurations} />
-        <Route path="/game" component={Game} />
-        {/* <Route></Route> feedbacks */}
-        <Route exact path="/game" component={Ranking} />
+        <Route exact path="/game" component={Game} />
+        <Route exact path="/configurations" component={Configurations} />
+        <Route exact path="/ranking" component={Ranking} />
+        <Route exact path="/feedback" component={Feedback} />
       </Switch>
     </BrowserRouter>
   );
