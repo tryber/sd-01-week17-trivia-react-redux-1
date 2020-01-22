@@ -22,11 +22,13 @@ class Home extends React.Component {
       name: '',
     };
   }
+  componentDidMount() {
+    getTokenTriviaAPI();
+  }
 
   startGame() {
     const { gravatarEmail, name } = this.state;
     if (gravatarEmail !== '' && name !== '') {
-      getTokenTriviaAPI();
       Home.sendPlayerToLocalStorage(name, gravatarEmail);
       return this.setState({
         shouldRedirect: true,

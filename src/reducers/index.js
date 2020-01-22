@@ -1,5 +1,5 @@
-// import {combineReducers} from 'react-redux';
-// import loadQuestion from './loadQuestion';
+import { combineReducers } from 'redux';
+import triviaReducer from './triviaReducer';
 
-// const rootReducers = combineReducers({loadQuestion});
-// // export default rootReducers;
+const rootReducers = combineReducers({ triviaReducer });
+export default rootReducers;
