@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Header from './Header';
 import { connect } from 'react-redux';
 import { loadData } from '../actions';
 
@@ -8,7 +9,11 @@ class Game extends React.Component {
     this.props.loadTriviaData();
   }
   render() {
-    return <div>diauwhdwaiuh</div>;
+    return (
+      <div>
+        <Header />
+      </div>
+    );
   }
 }
 
