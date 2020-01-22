@@ -1,5 +1,5 @@
 import React from 'react';
-import '../css/Feedback.css'
+import '../css/Feedback.css';
 // import Header from './games/Header'
 // let valor = {
 //   name: 'douglas',
@@ -37,14 +37,16 @@ function btn() {
       <button className="btn-Ranking">VER RANKING</button>
       <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
     </div>
-  )
+  );
 }
 const teste = () => <h3>Esse elemento será a header. Ele sairá daqui</h3>;
 function Feedback() {
   return (
     <div>
       {teste()}
-      <h1 data-testid="feedback-text">{textFeedbackAssertions(objectLocalStorage)}</h1>
+      <h1 data-testid="feedback-text">
+        {textFeedbackAssertions(objectLocalStorage)}
+      </h1>
       <p>{textFeedbackScore(objectLocalStorage)}</p>
       {btn()}
     </div>
