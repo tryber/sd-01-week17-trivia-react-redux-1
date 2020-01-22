@@ -59,9 +59,9 @@ function Feedback() {
 //   textFeedbackAssertions: PropTypes.func.isRequired,
 // };
 
-Feedback.propTypes = {
-  score: PropTypes.number,
-  assertions: PropTypes.number,
-};
-
 export default Feedback;
+
+Feedback.propTypes = {
+  score: PropTypes.string.isRequired,
+  assertions: PropTypes.string.isRequired,
+};
