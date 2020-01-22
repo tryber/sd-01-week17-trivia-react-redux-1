@@ -4,7 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 // import './App.css';
 import Home from './components/Home';
 import Game from './components/games/Game';
-import Configurations from "./components/Configurations";
+import Configurations from './components/Configurations';
 
 export default function App() {
   return (

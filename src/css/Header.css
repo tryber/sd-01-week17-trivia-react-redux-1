@@ -1,16 +1,18 @@
 .header {
-	align-items: center;
-	background-color: #C4C4C4;
+  align-items: center;
+	background-color: #c4c4c4;
 	display: flex;
 	flex-direction: row;
 	height: 10%;
 	width: 100%;
 }
+
 .player {
-	color: #000000;
+	color: #000;
 	font-size: 26px;
 	line-height: 30px;
 }
+
 .content-palyer {
 	color: blueviolet;
 	display: flex;
@@ -18,6 +20,7 @@
 	justify-content: flex-start;
 	width: 30%;
 }
+
 .img-avatar {
 	border-radius: 100%;
 	color: yellow;
