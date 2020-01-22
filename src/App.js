@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './components/Home';
 import Configurations from './components/Configurations';
+import Ranking from './components/Ranking';
 import Game from './components/Game';
 
 export default function App() {
@@ -12,7 +13,7 @@ export default function App() {
         <Route path="/configurations" component={Configurations} />
         <Route path="/game" component={Game} />
         {/* <Route></Route> feedbacks */}
-        {/* <Route></Route> ranking */}
+        <Route exact path="/game" component={Ranking} />
       </Switch>
     </BrowserRouter>
   );

@@ -1,0 +1,21 @@
+div {
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  height: 474px;
+  padding: 1em;
+  width: 792px;
+}
+
+span {
+  background: whitesmoke;
+  height: 49px;
+  width: 625px;
+}
+
+img {
+  border-radius: 112.5px;
+  height: 34px;
+  width: 34px;
+}
