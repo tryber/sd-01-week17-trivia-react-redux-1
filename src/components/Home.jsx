@@ -36,7 +36,7 @@ class Home extends React.Component {
 
   findFilters(triviaToken) {
     const { filters } = this.props;
-    let url = `https://opentdb.com/api.php?amount=5&token=${triviaToken}${Home.allFilters(
+    const url = `https://opentdb.com/api.php?amount=5&token=${triviaToken}${Home.allFilters(
       filters,
       'category',
     )}${Home.allFilters(filters, 'difficulty')}${Home.allFilters(
@@ -137,7 +137,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Home.propTypes = {
-  loadData: PropTypes.func.isRequired,
+  loadTriviaData: PropTypes.func.isRequired,
+  filters: PropTypes.arrayOf,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
