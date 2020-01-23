@@ -1,6 +1,9 @@
 import React from 'react';
 import { Redirect, Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import '../css/Home.css';
+import { loadData } from '../actions';
 import getTokenTriviaAPI from '../service/APIService';
 
 class Home extends React.Component {
@@ -26,6 +29,38 @@ class Home extends React.Component {
     getTokenTriviaAPI();
   }
 
+  componentWillUnmount() {
+    console.log(this.gerateURLtoTriviaAPI());
+    this.props.loadTriviaData(this.gerateURLtoTriviaAPI());
+  }
+
+  findFilters(triviaToken) {
+    const { filters } = this.props;
+    let url = `https://opentdb.com/api.php?amount=5&token=${triviaToken}${Home.allFilters(
+      filters,
+      'category',
+    )}${Home.allFilters(filters, 'difficulty')}${Home.allFilters(
+      filters,
+      'type',
+    )}`;
+    return url;
+  }
+
+  static allFilters(filters, type) {
+    if (filters[type] && filters[type] !== '') {
+      return `&${type}=${filters[type]}`;
+    }
+    return '';
+  }
+
+  gerateURLtoTriviaAPI() {
+    const triviaToken = localStorage.token;
+    const defaultURL = `https://opentdb.com/api.php?amount=5&token=${triviaToken}`;
+    if (this.props.filters) {
+      return this.findFilters(triviaToken);
+    }
+    return defaultURL;
+  }
   startGame() {
     const { gravatarEmail, name } = this.state;
     if (gravatarEmail !== '' && name !== '') {
@@ -72,6 +107,7 @@ class Home extends React.Component {
     );
   }
   render() {
+    console.log(this.props.filters);
     if (this.state.shouldRedirect) {
       return <Redirect to="/game" />;
     }
@@ -92,4 +128,16 @@ class Home extends React.Component {
   }
 }
 
-export default Home;
+const mapStateToProps = (state) => ({
+  filters: state.questionsReducer,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadTriviaData: (url) => dispatch(loadData(url)),
+});
+
+Home.propTypes = {
+  loadData: PropTypes.func.isRequired,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
