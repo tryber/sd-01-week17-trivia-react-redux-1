@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import '../css/Feedback.css';
 // import Header from './games/Header'
 // let valor = {
@@ -35,8 +36,12 @@ function textFeedbackScore({ score, assertions }) {
 function btn() {
   return (
     <div>
-      <button className="btn-Ranking">VER RANKING</button>
-      <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
+      <Link to="/ranking">
+        <button className="btn-Ranking">VER RANKING</button>
+      </Link>
+      <Link to="/">
+        <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
+      </Link>
     </div>
   );
 }
@@ -59,9 +64,17 @@ function Feedback() {
 //   textFeedbackAssertions: PropTypes.func.isRequired,
 // };
 
+textFeedbackScore.propTypes = {
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
+};
+
+textFeedbackAssertions.propTypes = {
+  assertions: PropTypes.number.isRequired,
+};
 export default Feedback;
 
 Feedback.propTypes = {
-  score: PropTypes.string.isRequired,
-  assertions: PropTypes.string.isRequired,
+  textFeedbackScore: PropTypes.func.isRequired,
+  textFeedbackAssertions: PropTypes.func.isRequired,
 };
