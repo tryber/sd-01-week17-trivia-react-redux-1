@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './Header';
-import { loadData } from '../actions';
 
 class Game extends React.Component {
   static shuffleArray(array) {
@@ -44,9 +43,9 @@ class Game extends React.Component {
     };
   }
 
-  componentDidMount() {
-    this.props.loadTriviaData();
-  }
+  // componentDidMount() {
+  //   this.props.loadTriviaData();
+  // }
 
   generateQuestion(questions) {
     if (questions) {
@@ -82,12 +81,7 @@ const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data.results,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  loadTriviaData: () => dispatch(loadData()),
-});
-
 Game.propTypes = {
-  loadTriviaData: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf.isRequired,
 };
-export default connect(mapStateToProps, mapDispatchToProps)(Game);
+export default connect(mapStateToProps)(Game);
