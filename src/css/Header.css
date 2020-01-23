@@ -1,24 +1,15 @@
 .header {
-  align-items: center;
   background-color: #c4c4c4;
   display: flex;
   flex-direction: row;
-  height: 10%;
-  width: 100%;
+  height: 22%;
 }
+
 
 .player {
   color: black;
   font-size: 26px;
   line-height: 30px;
-}
-
-.content-palyer {
-  color: blueviolet;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  width: 30%;
 }
 
 .img-avatar {
@@ -27,4 +18,12 @@
   height: 50px;
   padding: 10px;
   width: 50px;
+}
+
+.content-player {
+  align-items: flex-start;
+  color: blueviolet;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 }
