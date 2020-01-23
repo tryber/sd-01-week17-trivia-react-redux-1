@@ -73,9 +73,9 @@ class Configurations extends Component {
         <h2>Configurações</h2>
         <label htmlFor="trivia_category">Categorias: </label>
         {this.selectCategory()}
-        <label htmlfor="trivia_difficulty">Dificuldade: </label>
+        <label htmlFor="trivia_difficulty">Dificuldade: </label>
         {this.selectDifficulty()}
-        <label htmlfor="trivia_type">Tipo: </label>
+        <label htmlFor="trivia_type">Tipo: </label>
         {this.selectType()}
         <Link to="/">
           <button type="button">Aplicar Configurações!</button>

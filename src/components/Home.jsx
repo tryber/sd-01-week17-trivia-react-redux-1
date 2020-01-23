@@ -17,6 +17,13 @@ class Home extends React.Component {
     localStorage.setItem('player', JSON.stringify(player));
   }
 
+  static allFilters(filters, type) {
+    if (filters[type] && filters[type] !== '') {
+      return `&${type}=${filters[type]}`;
+    }
+    return '';
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +37,6 @@ class Home extends React.Component {
   }
 
   componentWillUnmount() {
-    console.log(this.gerateURLtoTriviaAPI());
     this.props.loadTriviaData(this.gerateURLtoTriviaAPI());
   }
 
@@ -44,13 +50,6 @@ class Home extends React.Component {
       'type',
     )}`;
     return url;
-  }
-
-  static allFilters(filters, type) {
-    if (filters[type] && filters[type] !== '') {
-      return `&${type}=${filters[type]}`;
-    }
-    return '';
   }
 
   gerateURLtoTriviaAPI() {
@@ -138,7 +137,7 @@ const mapDispatchToProps = (dispatch) => ({
 
 Home.propTypes = {
   loadTriviaData: PropTypes.func.isRequired,
-  filters: PropTypes.arrayOf,
+  filters: PropTypes.arrayOf.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
