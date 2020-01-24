@@ -1,0 +1,9 @@
+.answer{
+    background-color: white;
+}
+.answer-correct{
+    background-color: aquamarine;
+}
+.answer-incorrect{
+    background-color: red;
+}

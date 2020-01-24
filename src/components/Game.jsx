@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './Header';
 import { loadData, successQuestion, falseQuestion } from '../actions';
+import '../css/Game.css';
 
 
 // className={if(this.)?}
@@ -16,6 +17,7 @@ class Game extends React.Component {
     };
     this.handleClickTrue = this.handleClickTrue.bind(this);
     this.handleClickFalse = this.handleClickFalse.bind(this);
+    this.correctClass = this.correctClass.bind(this);
   }
 
   componentDidMount() {
@@ -23,11 +25,11 @@ class Game extends React.Component {
   }
 
   handleClickTrue() {
-    this.props.verifyTrue()
+    this.props.verifyTrue();
   }
 
   handleClickFalse() {
-    this.props.verifyFalse()
+    this.props.verifyFalse();
   }
   
   static shuffleArray(array) {
@@ -38,13 +40,21 @@ class Game extends React.Component {
     }
     return newArray;
   }
+  correctClass(){
+    const { correct } = this.props;
+    const correctcard = ['answer'];
+    if(correct === true){
+      return correctcard.push('-correct') && correctcard.join(' ');
+    } return correctcard.push('-incorrect') && correctcard.join(' ');
+  }
 
-  static generateAnswers(question) {
+  generateAnswers(question) {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
       <label key={answer} htmlFor={answer}>
         <input
           onClick={() => this.handleClickFalse()}
           type="radio"
+          className={this.correctClass()}
           id={answer}
           value={answer}
           name="answer"
@@ -57,7 +67,7 @@ class Game extends React.Component {
       <label key={question.correct_answer} htmlFor={question.correct_answer}>
         <input 
           onClick={() => this.handleClickTrue()}
-          className="correct"
+          className={this.correctClass()}
           type="radio" 
           name="answer" 
           data-testid="correct-awnser" />
@@ -81,7 +91,7 @@ class Game extends React.Component {
             <p className="question-category">{question.category}</p>
             <p className="question-text">{question.question}</p>
           </div>
-          <div>{Game.generateAnswers(question)}</div>
+          <div>{this.generateAnswers(question)}</div>
         </div>
       );
     }
@@ -100,8 +110,7 @@ class Game extends React.Component {
 }
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data.results,
-  questionTrue: state.gameReducer.correct,
-  questionFalse: state.gameReducer.incorrect,
+  correct: state.gameReducer.correct,
   // question: state.question.correct,
 });
 

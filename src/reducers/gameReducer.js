@@ -8,7 +8,7 @@
       case 'QUESTION_FALSE':
         return {
           ...state,
-          incorrect: false,        
+          correct: false,        
         };
       default:
         return state;
