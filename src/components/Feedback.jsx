@@ -43,7 +43,7 @@ function btn() {
         <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
       </Link>
     </div>
-  )
+  );
 }
 const teste = () => <h3>Esse elemento será a header. Ele sairá daqui</h3>;
 function Feedback() {
