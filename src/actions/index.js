@@ -1,8 +1,8 @@
-const triviaToken = localStorage.token;
-// export const questionTrue = (quest) => ({
-//   type: 'TYPE_QUESTION_DA_HORA',
-//   quest,
-// })
+// const triviaToken = localStorage.token;
+// // export const questionTrue = (quest) => ({
+// //   type: 'TYPE_QUESTION_DA_HORA',
+// //   quest,
+// // })
 
 export const successQuestion = () => ({
   type: 'QUESTION_SUCCESS',
@@ -25,10 +25,25 @@ export const loadDataRequest = () => ({
   type: 'LOAD_API_REQUEST',
 });
 
-export const loadData = () => (dispatch) => {
+export const loadData = (url) => (dispatch) => {
   dispatch(loadDataRequest());
-  fetch(`https://opentdb.com/api.php?amount=5&token=${triviaToken}`)
+  fetch(url)
     .then((data) => data.json())
     .then((response) => dispatch(loadDataSucess(response)))
     .catch(() => dispatch(loadDataError()));
 };
+
+export const changeCategory = (questionCategory) => ({
+  type: 'CHANGE_CATEGORY',
+  questionCategory,
+});
+
+export const changeType = (questionType) => ({
+  type: 'CHANGE_TYPE',
+  questionType,
+});
+
+export const changeDifficulty = (questionDifficulty) => ({
+  type: 'CHANGE_DIFFICULTY',
+  questionDifficulty,
+});

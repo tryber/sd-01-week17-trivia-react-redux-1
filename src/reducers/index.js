@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
 import triviaReducer from './triviaReducer';
 import gameReducer from './gameReducer';
-import question from './question';
+import questionsReducer from './questionFilterReducer';
 
-const rootReducers = combineReducers({ triviaReducer, gameReducer, question });
+const rootReducers = combineReducers({ triviaReducer, questionsReducer, gameReducer });
+
 export default rootReducers;

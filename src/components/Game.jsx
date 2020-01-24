@@ -5,10 +5,6 @@ import Header from './Header';
 import { loadData, successQuestion, falseQuestion } from '../actions';
 import '../css/Game.css';
 
-
-// className={if(this.)?}
-
-
 class Game extends React.Component {
   constructor(props) {
     super(props);
@@ -18,10 +14,6 @@ class Game extends React.Component {
     this.handleClickTrue = this.handleClickTrue.bind(this);
     this.handleClickFalse = this.handleClickFalse.bind(this);
     this.correctClass = this.correctClass.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.loadTriviaData();
   }
 
   handleClickTrue() {
@@ -78,6 +70,11 @@ class Game extends React.Component {
     return Game.shuffleArray(allAnswers);
   }
 
+
+  // componentDidMount() {
+  //   this.props.loadTriviaData();
+  // }
+
   generateQuestion(questions) {
     if (questions) {
       const question = questions[this.state.questionIndex];
@@ -121,7 +118,7 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 Game.propTypes = {
-  loadTriviaData: PropTypes.func.isRequired,
   questions: PropTypes.arrayOf.isRequired,
 };
+
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
