@@ -2,9 +2,34 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './Header';
-import { loadData } from '../actions';
+import { loadData, successQuestion, falseQuestion } from '../actions';
+
+
+// className={if(this.)?}
+
 
 class Game extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      questionIndex: 0,
+    };
+    this.handleClickTrue = this.handleClickTrue.bind(this);
+    this.handleClickFalse = this.handleClickFalse.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.loadTriviaData();
+  }
+
+  handleClickTrue() {
+    this.props.verifyTrue()
+  }
+
+  handleClickFalse() {
+    this.props.verifyFalse()
+  }
+  
   static shuffleArray(array) {
     const newArray = array;
     for (let i = array.length - 1; i > 0; i -= 1) {
@@ -18,6 +43,7 @@ class Game extends React.Component {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
       <label key={answer} htmlFor={answer}>
         <input
+          onClick={() => this.handleClickFalse()}
           type="radio"
           id={answer}
           value={answer}
@@ -29,23 +55,17 @@ class Game extends React.Component {
     ));
     const correctAnswer = (
       <label key={question.correct_answer} htmlFor={question.correct_answer}>
-        <input type="radio" name="answer" data-testid="correct-awnser" />
+        <input 
+          onClick={() => this.handleClickTrue()}
+          className="correct"
+          type="radio" 
+          name="answer" 
+          data-testid="correct-awnser" />
         {question.correct_answer}
       </label>
     );
     const allAnswers = [...incorrectAnswers, correctAnswer];
     return Game.shuffleArray(allAnswers);
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      questionIndex: 0,
-    };
-  }
-
-  componentDidMount() {
-    this.props.loadTriviaData();
   }
 
   generateQuestion(questions) {
@@ -67,7 +87,7 @@ class Game extends React.Component {
     }
     return 'Loading questions...';
   }
-
+  
   render() {
     const { questions } = this.props;
     return (
@@ -80,10 +100,15 @@ class Game extends React.Component {
 }
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data.results,
+  questionTrue: state.gameReducer.correct,
+  questionFalse: state.gameReducer.incorrect,
+  // question: state.question.correct,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   loadTriviaData: () => dispatch(loadData()),
+  verifyTrue: () => dispatch(successQuestion()),
+  verifyFalse: () => dispatch(falseQuestion()),
 });
 
 Game.propTypes = {
