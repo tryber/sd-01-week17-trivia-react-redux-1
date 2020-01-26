@@ -196,6 +196,8 @@ Game.propTypes = {
   verifyFalse: PropTypes.func.isRequired,
   verifyTrue: PropTypes.func.isRequired,
   correct: PropTypes.arrayOf.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
