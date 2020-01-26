@@ -122,7 +122,20 @@ class Game extends React.Component {
     }
   }
 
-  generateNextButton() {
+  generateNextButton(param) {
+    if (param) {
+      return (
+        <Link to="/feedback">
+          <button
+            type="button"
+            className={this.state.showColor ? 'show-button' : 'hide-button'}
+            onClick={() => this.nextQuestion()}
+          >
+            Ver feedback!
+          </button>
+        </Link>
+      );
+    }
     return (
       <button
         type="button"
@@ -140,6 +153,7 @@ class Game extends React.Component {
       return 'Loading questions...';
     }
     if (questions.response_code === 3) {
+      localStorage.clear();
       return <Redirect to="/" />;
     }
     return (
@@ -156,15 +170,14 @@ class Game extends React.Component {
           )}
         </Timer>
         {this.generateQuestion(questions.results)}
-        {this.state.questionIndex === 4 ? (
-          <Link to="/feedback">{this.generateNextButton()}</Link>
-        ) : (
-          this.generateNextButton()
-        )}
+        {this.state.questionIndex === 4
+          ? this.generateNextButton(true)
+          : this.generateNextButton(false)}
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data,
   correct: state.gameReducer.correct,
