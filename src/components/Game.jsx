@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import Timer from 'react-compound-timer';
 import Header from './Header';
 import { successQuestion, falseQuestion } from '../actions';
 import '../css/Game.css';
@@ -25,17 +26,36 @@ class Game extends React.Component {
     this.state = {
       questionIndex: 0,
       showColor: false,
+      time: 30,
     };
     this.handleClickTrue = this.handleClickTrue.bind(this);
     this.handleClickFalse = this.handleClickFalse.bind(this);
     this.correctClass = this.correctClass.bind(this);
   }
+  calculateScore(previousScore) {
+    switch (this.props.questions[this.state.questionIndex].difficulty) {
+      case 'easy':
+        return previousScore + 10 + localStorage.time * 1;
+      case 'medium':
+        return previousScore + 10 + localStorage.time * 2;
+      case 'hard':
+        return previousScore + 10 + localStorage.time * 3;
+      default:
+        return 0;
+    }
+  }
 
   handleClickTrue() {
+    if (localStorage.time < 1) {
+      return this.handleClickFalse();
+    }
+    const { score, assertions } = this.props;
+    const newScore = this.calculateScore(score);
+    const newAssertions = assertions + 1;
     this.setState({
       showColor: true,
     });
-    this.props.verifyTrue();
+    this.props.verifyTrue(newScore, newAssertions);
   }
 
   handleClickFalse() {
@@ -56,13 +76,12 @@ class Game extends React.Component {
   generateAnswers(question) {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
       <button
+        key={answer}
         onClick={() => this.handleClickFalse()}
         disabled={this.state.showColor ? true : false}
         type="button"
         className={this.state.showColor ? 'answer-incorrect' : ''}
-        id={answer}
         value={answer}
-        name="answer"
         data-testid={`wrong-answer-${index}`}
       >
         {answer}
@@ -70,11 +89,11 @@ class Game extends React.Component {
     ));
     const correctAnswer = (
       <button
+        key={question.correct_answer}
         onClick={() => this.handleClickTrue()}
         disabled={this.state.showColor ? true : false}
         className={this.state.showColor ? 'answer-correct' : ''}
         type="button"
-        name="answer"
         data-testid="correct-awnser"
       >
         {question.correct_answer}
@@ -100,12 +119,28 @@ class Game extends React.Component {
     return 'Loading questions...';
   }
 
+  getTime(param) {
+    if (!this.state.showColor) {
+      localStorage.setItem('time', param);
+    }
+  }
+
   render() {
     const { questions } = this.props;
     return (
       <div>
         <Header />
         {this.generateQuestion(questions)}
+        <Timer initialTime={30001} direction="backward">
+          {({ getTime }) => (
+            <React.Fragment>
+              <Timer.Seconds
+                onChange={this.getTime(Math.floor(getTime() / 1000))}
+              />{' '}
+              segundos
+            </React.Fragment>
+          )}
+        </Timer>
       </div>
     );
   }
@@ -113,10 +148,13 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data.results,
   correct: state.gameReducer.correct,
+  score: state.gameReducer.score,
+  assertions: state.gameReducer.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  verifyTrue: () => dispatch(successQuestion()),
+  verifyTrue: (score, assertions) =>
+    dispatch(successQuestion(score, assertions)),
   verifyFalse: () => dispatch(falseQuestion()),
 });
 

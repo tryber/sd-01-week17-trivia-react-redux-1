@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
   score: 0,
-  assertion: 0,
+  assertions: 0,
 };
 
 const gameReducer = (state = INITIAL_STATE, action) => {
@@ -10,7 +10,7 @@ const gameReducer = (state = INITIAL_STATE, action) => {
         ...state,
         correct: true,
         score: action.score,
-        assertion: action.assertion,
+        assertions: action.assertions,
       };
     case 'QUESTION_FALSE':
       return {

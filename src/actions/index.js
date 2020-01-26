@@ -5,10 +5,10 @@
 // // })
 
 
-export const successQuestion = (score, assertion) => ({
+export const successQuestion = (score, assertions) => ({
   type: 'QUESTION_SUCCESS',
   score, 
-  assertion,
+  assertions,
 });
 
 export const falseQuestion = () => ({

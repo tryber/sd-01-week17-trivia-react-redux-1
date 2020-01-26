@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.1.2",
     "crypto-js": "^3.1.9-1",
     "react": "^16.12.0",
+    "react-compound-timer": "^1.1.15",
     "react-dom": "^16.12.0",
     "react-logger": "^1.1.0",
     "react-redux": "^7.1.3",
