@@ -126,7 +126,7 @@ class Game extends React.Component {
     return (
       <button
         type="button"
-        className={this.props.showColor ? 'show-button' : 'hide-button'}
+        className={this.state.showColor ? 'show-button' : 'hide-button'}
         onClick={() => this.nextQuestion()}
       >
         Próxima
@@ -139,7 +139,6 @@ class Game extends React.Component {
     if (!questions.results) {
       return 'Loading questions...';
     }
-
     if (questions.response_code === 3) {
       return <Redirect to="/" />;
     }
