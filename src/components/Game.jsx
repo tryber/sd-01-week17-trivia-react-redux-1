@@ -23,21 +23,28 @@ class Game extends React.Component {
   handleClickFalse() {
     this.props.verifyFalse();
   }
-  
-  static shuffleArray(array) {
-    const newArray = array;
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-  }
-  correctClass(){
+
+  correctClass() {
     const { correct } = this.props;
     const correctcard = ['answer'];
-    if(correct === true){
+    if (correct === true) {
       return correctcard.push('-correct') && correctcard.join(' ');
-    } return correctcard.push('-incorrect') && correctcard.join(' ');
+    }
+    return correctcard.push('-incorrect') && correctcard.join(' ');
+  }
+
+  static shuffleArray(allAnswers) {
+    const ordenedAnswers = allAnswers.sort(function(a, b) {
+      if (a.key > b.key) {
+        return 1;
+      }
+      if (a.key < b.key) {
+        return -1;
+      }
+      return 0;
+    });
+
+    return ordenedAnswers;
   }
 
   generateAnswers(question) {
@@ -57,19 +64,19 @@ class Game extends React.Component {
     ));
     const correctAnswer = (
       <label key={question.correct_answer} htmlFor={question.correct_answer}>
-        <input 
+        <input
           onClick={() => this.handleClickTrue()}
           className={this.correctClass()}
-          type="radio" 
-          name="answer" 
-          data-testid="correct-awnser" />
+          type="radio"
+          name="answer"
+          data-testid="correct-awnser"
+        />
         {question.correct_answer}
       </label>
     );
     const allAnswers = [...incorrectAnswers, correctAnswer];
     return Game.shuffleArray(allAnswers);
   }
-
 
   // componentDidMount() {
   //   this.props.loadTriviaData();
@@ -94,7 +101,7 @@ class Game extends React.Component {
     }
     return 'Loading questions...';
   }
-  
+
   render() {
     const { questions } = this.props;
     return (
