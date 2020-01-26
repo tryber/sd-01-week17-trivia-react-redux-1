@@ -6,11 +6,11 @@
 
 export const successQuestion = () => ({
   type: 'QUESTION_SUCCESS',
-})
+});
 
 export const falseQuestion = () => ({
   type: 'QUESTION_FALSE',
-})
+});
 
 export const loadDataSucess = (data) => ({
   type: 'LOAD_API_SUCESS',

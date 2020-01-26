@@ -1,9 +1,11 @@
 .answer{
-    background-color: white;
+  background-color: white;
 }
+
 .answer-correct{
-    background-color: green;
+  background-color: green;
 }
+
 .answer-incorrect{
-    background-color: red;
+  background-color: red;
 }

@@ -2,10 +2,24 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './Header';
-import { loadData, successQuestion, falseQuestion } from '../actions';
+import { successQuestion, falseQuestion } from '../actions';
 import '../css/Game.css';
 
 class Game extends React.Component {
+  static shuffleArray(allAnswers) {
+    const ordenedAnswers = allAnswers.sort(function(a, b) {
+      if (a.key > b.key) {
+        return 1;
+      }
+      if (a.key < b.key) {
+        return -1;
+      }
+      return 0;
+    });
+
+    return ordenedAnswers;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -39,26 +53,12 @@ class Game extends React.Component {
     return 'answer-incorrect';
   }
 
-  static shuffleArray(allAnswers) {
-    const ordenedAnswers = allAnswers.sort(function(a, b) {
-      if (a.key > b.key) {
-        return 1;
-      }
-      if (a.key < b.key) {
-        return -1;
-      }
-      return 0;
-    });
-
-    return ordenedAnswers;
-  }
-
   generateAnswers(question) {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
       <button
         onClick={() => this.handleClickFalse()}
         type="button"
-        className={(this.state.showColor) ? 'answer-incorrect' : ''}
+        className={this.state.showColor ? 'answer-incorrect' : ''}
         id={answer}
         value={answer}
         name="answer"
@@ -70,7 +70,7 @@ class Game extends React.Component {
     const correctAnswer = (
       <button
         onClick={() => this.handleClickTrue()}
-        className={(this.state.showColor) ? 'answer-correct' : ''}
+        className={this.state.showColor ? 'answer-correct' : ''}
         type="button"
         name="answer"
         data-testid="correct-awnser"
@@ -123,13 +123,15 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  loadTriviaData: () => dispatch(loadData()),
   verifyTrue: () => dispatch(successQuestion()),
   verifyFalse: () => dispatch(falseQuestion()),
 });
 
 Game.propTypes = {
   questions: PropTypes.arrayOf.isRequired,
+  verifyFalse: PropTypes.func.isRequired,
+  verifyTrue: PropTypes.func.isRequired,
+  correct: PropTypes.arrayOf.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
