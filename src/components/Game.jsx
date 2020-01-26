@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Timer from 'react-compound-timer';
 import Header from './Header';
@@ -32,7 +32,7 @@ class Game extends React.Component {
   }
 
   calculateScore(previousScore) {
-    switch (this.props.questions[this.state.questionIndex].difficulty) {
+    switch (this.props.questions.results[this.state.questionIndex].difficulty) {
       case 'easy':
         return previousScore + 10 + localStorage.time * 1;
       case 'medium':
@@ -62,14 +62,6 @@ class Game extends React.Component {
       showColor: true,
     });
     this.props.verifyFalse();
-  }
-
-  correctClass() {
-    const { correct } = this.props;
-    if (correct === true) {
-      return 'answer-correct';
-    }
-    return 'answer-incorrect';
   }
 
   generateAnswers(question) {
@@ -103,19 +95,16 @@ class Game extends React.Component {
   }
 
   generateQuestion(questions) {
-    if (questions) {
-      const question = questions[this.state.questionIndex];
-      return (
-        <div className="game-box">
-          <div className="question">
-            <p className="question-category">{question.category}</p>
-            <p className="question-text">{question.question}</p>
-          </div>
-          <div>{this.generateAnswers(question)}</div>
+    const question = questions[this.state.questionIndex];
+    return (
+      <div className="game-box">
+        <div className="question">
+          <p className="question-category">{question.category}</p>
+          <p className="question-text">{question.question}</p>
         </div>
-      );
-    }
-    return 'Loading questions...';
+        <div>{this.generateAnswers(question)}</div>
+      </div>
+    );
   }
 
   nextQuestion() {
@@ -147,6 +136,13 @@ class Game extends React.Component {
 
   render() {
     const { questions } = this.props;
+    if (!questions.results) {
+      return 'Loading questions...';
+    }
+
+    if (questions.response_code === 3) {
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <Header />
@@ -160,7 +156,7 @@ class Game extends React.Component {
             </React.Fragment>
           )}
         </Timer>
-        {this.generateQuestion(questions)}
+        {this.generateQuestion(questions.results)}
         {this.state.questionIndex === 4 ? (
           <Link to="/feedback">{this.generateNextButton()}</Link>
         ) : (
@@ -171,7 +167,7 @@ class Game extends React.Component {
   }
 }
 const mapStateToProps = (state) => ({
-  questions: state.triviaReducer.data.results,
+  questions: state.triviaReducer.data,
   correct: state.gameReducer.correct,
   score: state.gameReducer.score,
   assertions: state.gameReducer.assertions,
