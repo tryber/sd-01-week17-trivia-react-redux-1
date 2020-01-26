@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Timer from 'react-compound-timer';
 import Header from './Header';
@@ -28,10 +29,8 @@ class Game extends React.Component {
       showColor: false,
       time: 30,
     };
-    this.handleClickTrue = this.handleClickTrue.bind(this);
-    this.handleClickFalse = this.handleClickFalse.bind(this);
-    this.correctClass = this.correctClass.bind(this);
   }
+
   calculateScore(previousScore) {
     switch (this.props.questions[this.state.questionIndex].difficulty) {
       case 'easy':
@@ -119,10 +118,31 @@ class Game extends React.Component {
     return 'Loading questions...';
   }
 
+  nextQuestion() {
+    const previousQuestion = this.state.questionIndex;
+    const nextIndex = previousQuestion + 1;
+    this.setState({
+      questionIndex: nextIndex,
+      showColor: false,
+    });
+  }
+
   getTime(param) {
     if (!this.state.showColor) {
       localStorage.setItem('time', param);
     }
+  }
+
+  generateNextButton() {
+    return (
+      <button
+        type="button"
+        className={this.props.showColor ? 'show-button' : 'hide-button'}
+        onClick={() => this.nextQuestion()}
+      >
+        Próxima
+      </button>
+    );
   }
 
   render() {
@@ -130,7 +150,6 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        {this.generateQuestion(questions)}
         <Timer initialTime={30001} direction="backward">
           {({ getTime }) => (
             <React.Fragment>
@@ -141,6 +160,12 @@ class Game extends React.Component {
             </React.Fragment>
           )}
         </Timer>
+        {this.generateQuestion(questions)}
+        {this.state.questionIndex === 4 ? (
+          <Link to="/feedback">{this.generateNextButton()}</Link>
+        ) : (
+          this.generateNextButton()
+        )}
       </div>
     );
   }

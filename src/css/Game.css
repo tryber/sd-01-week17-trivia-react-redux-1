@@ -9,3 +9,11 @@
 .answer-incorrect {
   background-color: red;
 }
+
+.show-button {
+    display: block;
+}
+
+.hide-button {
+    display: none;
+}
