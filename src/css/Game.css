@@ -10,10 +10,11 @@
   background-color: red;
 }
 
+.hide-button {
+    display: none;
+}
+
 .show-button {
     display: block;
 }
 
-.hide-button {
-    display: none;
-}
