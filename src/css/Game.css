@@ -1,11 +1,11 @@
-.answer{
+.answer {
   background-color: white;
 }
 
-.answer-correct{
+.answer-correct {
   background-color: green;
 }
 
-.answer-incorrect{
+.answer-incorrect {
   background-color: red;
 }
