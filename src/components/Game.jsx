@@ -10,6 +10,7 @@ class Game extends React.Component {
     super(props);
     this.state = {
       questionIndex: 0,
+      showColor: false,
     };
     this.handleClickTrue = this.handleClickTrue.bind(this);
     this.handleClickFalse = this.handleClickFalse.bind(this);
@@ -17,20 +18,25 @@ class Game extends React.Component {
   }
 
   handleClickTrue() {
+    this.setState({
+      showColor: true,
+    });
     this.props.verifyTrue();
   }
 
   handleClickFalse() {
+    this.setState({
+      showColor: true,
+    });
     this.props.verifyFalse();
   }
 
   correctClass() {
     const { correct } = this.props;
-    const correctcard = ['answer'];
     if (correct === true) {
-      return correctcard.push('-correct') && correctcard.join(' ');
+      return 'answer-correct';
     }
-    return correctcard.push('-incorrect') && correctcard.join(' ');
+    return 'answer-incorrect';
   }
 
   static shuffleArray(allAnswers) {
@@ -49,30 +55,28 @@ class Game extends React.Component {
 
   generateAnswers(question) {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
-      <label key={answer} htmlFor={answer}>
-        <input
-          onClick={() => this.handleClickFalse()}
-          type="radio"
-          className={this.correctClass()}
-          id={answer}
-          value={answer}
-          name="answer"
-          data-testid={`wrong-answer-${index}`}
-        />
+      <button
+        onClick={() => this.handleClickFalse()}
+        type="button"
+        className={(this.state.showColor) ? 'answer-incorrect' : ''}
+        id={answer}
+        value={answer}
+        name="answer"
+        data-testid={`wrong-answer-${index}`}
+      >
         {answer}
-      </label>
+      </button>
     ));
     const correctAnswer = (
-      <label key={question.correct_answer} htmlFor={question.correct_answer}>
-        <input
-          onClick={() => this.handleClickTrue()}
-          className={this.correctClass()}
-          type="radio"
-          name="answer"
-          data-testid="correct-awnser"
-        />
+      <button
+        onClick={() => this.handleClickTrue()}
+        className={(this.state.showColor) ? 'answer-correct' : ''}
+        type="button"
+        name="answer"
+        data-testid="correct-awnser"
+      >
         {question.correct_answer}
-      </label>
+      </button>
     );
     const allAnswers = [...incorrectAnswers, correctAnswer];
     return Game.shuffleArray(allAnswers);
