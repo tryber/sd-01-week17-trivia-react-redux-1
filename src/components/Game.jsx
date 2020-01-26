@@ -7,7 +7,7 @@ import '../css/Game.css';
 
 class Game extends React.Component {
   static shuffleArray(allAnswers) {
-    const ordenedAnswers = allAnswers.sort(function(a, b) {
+    const ordenedAnswers = allAnswers.sort((a, b) => {
       if (a.key > b.key) {
         return 1;
       }
