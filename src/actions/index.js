@@ -4,8 +4,11 @@
 // //   quest,
 // // })
 
-export const successQuestion = () => ({
+
+export const successQuestion = (score, assertion) => ({
   type: 'QUESTION_SUCCESS',
+  score, 
+  assertion,
 });
 
 export const falseQuestion = () => ({

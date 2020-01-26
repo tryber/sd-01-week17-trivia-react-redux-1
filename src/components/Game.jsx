@@ -57,6 +57,7 @@ class Game extends React.Component {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
       <button
         onClick={() => this.handleClickFalse()}
+        disabled={this.state.showColor ? true : false}
         type="button"
         className={this.state.showColor ? 'answer-incorrect' : ''}
         id={answer}
@@ -70,6 +71,7 @@ class Game extends React.Component {
     const correctAnswer = (
       <button
         onClick={() => this.handleClickTrue()}
+        disabled={this.state.showColor ? true : false}
         className={this.state.showColor ? 'answer-correct' : ''}
         type="button"
         name="answer"
@@ -82,17 +84,9 @@ class Game extends React.Component {
     return Game.shuffleArray(allAnswers);
   }
 
-  // componentDidMount() {
-  //   this.props.loadTriviaData();
-  // }
-
   generateQuestion(questions) {
     if (questions) {
       const question = questions[this.state.questionIndex];
-      // const newIndex = this.state.questionIndex + 1;
-      // this.setState({
-      //   questionIndex: newIndex
-      // })
       return (
         <div className="game-box">
           <div className="question">
@@ -119,7 +113,6 @@ class Game extends React.Component {
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data.results,
   correct: state.gameReducer.correct,
-  // question: state.question.correct,
 });
 
 const mapDispatchToProps = (dispatch) => ({
