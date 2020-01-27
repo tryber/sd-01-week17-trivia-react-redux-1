@@ -2,45 +2,84 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Header from './Header';
+import { successQuestion, falseQuestion } from '../actions';
+import '../css/Game.css';
 
 class Game extends React.Component {
-  static shuffleArray(array) {
-    const newArray = array;
-    for (let i = array.length - 1; i > 0; i -= 1) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-    }
-    return newArray;
-  }
+  static shuffleArray(allAnswers) {
+    const ordenedAnswers = allAnswers.sort((a, b) => {
+      if (a.key > b.key) {
+        return 1;
+      }
+      if (a.key < b.key) {
+        return -1;
+      }
+      return 0;
+    });
 
-  static generateAnswers(question) {
-    const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
-      <label key={answer} htmlFor={answer}>
-        <input
-          type="radio"
-          id={answer}
-          value={answer}
-          name="answer"
-          data-testid={`wrong-answer-${index}`}
-        />
-        {answer}
-      </label>
-    ));
-    const correctAnswer = (
-      <label key={question.correct_answer} htmlFor={question.correct_answer}>
-        <input type="radio" name="answer" data-testid="correct-awnser" />
-        {question.correct_answer}
-      </label>
-    );
-    const allAnswers = [...incorrectAnswers, correctAnswer];
-    return Game.shuffleArray(allAnswers);
+    return ordenedAnswers;
   }
 
   constructor(props) {
     super(props);
     this.state = {
       questionIndex: 0,
+      showColor: false,
     };
+    this.handleClickTrue = this.handleClickTrue.bind(this);
+    this.handleClickFalse = this.handleClickFalse.bind(this);
+    this.correctClass = this.correctClass.bind(this);
+  }
+
+  handleClickTrue() {
+    this.setState({
+      showColor: true,
+    });
+    this.props.verifyTrue();
+  }
+
+  handleClickFalse() {
+    this.setState({
+      showColor: true,
+    });
+    this.props.verifyFalse();
+  }
+
+  correctClass() {
+    const { correct } = this.props;
+    if (correct === true) {
+      return 'answer-correct';
+    }
+    return 'answer-incorrect';
+  }
+
+  generateAnswers(question) {
+    const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
+      <button
+        onClick={() => this.handleClickFalse()}
+        type="button"
+        className={this.state.showColor ? 'answer-incorrect' : ''}
+        id={answer}
+        value={answer}
+        name="answer"
+        data-testid={`wrong-answer-${index}`}
+      >
+        {answer}
+      </button>
+    ));
+    const correctAnswer = (
+      <button
+        onClick={() => this.handleClickTrue()}
+        className={this.state.showColor ? 'answer-correct' : ''}
+        type="button"
+        name="answer"
+        data-testid="correct-awnser"
+      >
+        {question.correct_answer}
+      </button>
+    );
+    const allAnswers = [...incorrectAnswers, correctAnswer];
+    return Game.shuffleArray(allAnswers);
   }
 
   // componentDidMount() {
@@ -60,7 +99,7 @@ class Game extends React.Component {
             <p className="question-category">{question.category}</p>
             <p className="question-text">{question.question}</p>
           </div>
-          <div>{Game.generateAnswers(question)}</div>
+          <div>{this.generateAnswers(question)}</div>
         </div>
       );
     }
@@ -79,9 +118,20 @@ class Game extends React.Component {
 }
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data.results,
+  correct: state.gameReducer.correct,
+  // question: state.question.correct,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  verifyTrue: () => dispatch(successQuestion()),
+  verifyFalse: () => dispatch(falseQuestion()),
 });
 
 Game.propTypes = {
   questions: PropTypes.arrayOf.isRequired,
+  verifyFalse: PropTypes.func.isRequired,
+  verifyTrue: PropTypes.func.isRequired,
+  correct: PropTypes.arrayOf.isRequired,
 };
-export default connect(mapStateToProps)(Game);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
