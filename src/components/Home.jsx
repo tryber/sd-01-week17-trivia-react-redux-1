@@ -33,6 +33,7 @@ class Home extends React.Component {
     };
   }
   componentDidMount() {
+    localStorage.removeItem('player');
     getTokenTriviaAPI();
   }
 

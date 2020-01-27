@@ -11,14 +11,13 @@ class Game extends React.Component {
   static shuffleArray(allAnswers) {
     const ordenedAnswers = allAnswers.sort((a, b) => {
       if (a.key > b.key) {
-        return 1;
+        return -1;
       }
       if (a.key < b.key) {
-        return -1;
+        return 1;
       }
       return 0;
     });
-
     return ordenedAnswers;
   }
 
@@ -58,11 +57,11 @@ class Game extends React.Component {
   calculateScore(previousScore) {
     switch (this.props.questions.results[this.state.questionIndex].difficulty) {
       case 'easy':
-        return (localStorage.time * 1) + previousScore + 10;
+        return localStorage.time * 1 + previousScore + 10;
       case 'medium':
-        return (localStorage.time * 2) + previousScore + 10;
+        return localStorage.time * 2 + previousScore + 10;
       case 'hard':
-        return (localStorage.time * 3) + previousScore + 10;
+        return localStorage.time * 3 + previousScore + 10;
       default:
         return 0;
     }
@@ -180,7 +179,7 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <Timer initialTime={30001} direction="backward">
+        <Timer initialTime={30001} direction="backward" data-testid="timer">
           {({ getTime, reset }) => (
             <React.Fragment>
               <Timer.Seconds

@@ -6,6 +6,19 @@ import '../css/Feedback.css';
 import Header from './Header';
 
 class Feedback extends React.Component {
+  static ordenedArray(allAnswers) {
+    const ordenedAnswers = allAnswers.sort((a, b) => {
+      if (a.score < b.score) {
+        return 1;
+      }
+      if (a.score > b.score) {
+        return -1;
+      }
+      return 0;
+    });
+    return ordenedAnswers;
+  }
+
   static textFeedbackAssertions({ assertions }) {
     if (assertions < 3) {
       return 'Podia ser melhor...';
@@ -27,13 +40,41 @@ class Feedback extends React.Component {
     return (
       <div>
         <Link to="/ranking">
-          <button className="btn-Ranking">VER RANKING</button>
+          <button className="btn-Ranking">
+            VER RANKING
+          </button>
         </Link>
         <Link to="/">
           <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
         </Link>
       </div>
     );
+  }
+
+  componentWillUnmount() {
+    this.saveRanking();
+  }
+  saveRanking() {
+    const name = JSON.parse(localStorage.player);
+    const gravatarImg = localStorage.gravatarIMG;
+    if (localStorage.ranking) {
+      const outdateStorage = JSON.parse(localStorage.ranking);
+      const newPlayer = {
+        name: name.name,
+        gravatarImg,
+        score: this.props.finalPoints.score,
+      };
+      return (localStorage.ranking = JSON.stringify(
+        Feedback.ordenedArray([...outdateStorage, newPlayer]),
+      ));
+    }
+    return (localStorage.ranking = JSON.stringify([
+      {
+        name: name.name,
+        gravatarImg,
+        score: this.props.finalPoints.score,
+      },
+    ]));
   }
   render() {
     return (
