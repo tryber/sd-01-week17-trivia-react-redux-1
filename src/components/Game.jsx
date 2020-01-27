@@ -11,14 +11,13 @@ class Game extends React.Component {
   static shuffleArray(allAnswers) {
     const ordenedAnswers = allAnswers.sort((a, b) => {
       if (a.key > b.key) {
-        return 1;
+        return -1;
       }
       if (a.key < b.key) {
-        return -1;
+        return 1;
       }
       return 0;
     });
-
     return ordenedAnswers;
   }
 
@@ -147,6 +146,7 @@ class Game extends React.Component {
         <Link to="/feedback">
           <button
             type="button"
+            data-testid="btn-next"
             className={this.state.showColor ? 'show-button' : 'hide-button'}
             onClick={() => this.nextQuestion()}
           >
@@ -158,6 +158,7 @@ class Game extends React.Component {
     return (
       <button
         type="button"
+        data-testid="btn-next"
         className={this.state.showColor ? 'show-button' : 'hide-button'}
         onClick={() => this.nextQuestion()}
       >
@@ -178,7 +179,7 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <Timer initialTime={30001} direction="backward">
+        <Timer initialTime={30001} direction="backward" data-testid="timer">
           {({ getTime, reset }) => (
             <React.Fragment>
               <Timer.Seconds

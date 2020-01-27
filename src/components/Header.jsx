@@ -13,6 +13,7 @@ class Header extends Component {
     const gravatarImg = `https://www.gravatar.com/avatar/${myHash
       .toString()
       .toLowerCase()}.jpg`;
+    localStorage.setItem('gravatarIMG', gravatarImg);
     return (
       <header className="header">
         <div className="content-player">
