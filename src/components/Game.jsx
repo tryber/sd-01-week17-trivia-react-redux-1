@@ -52,6 +52,7 @@ class Game extends React.Component {
     const { score, assertions } = this.props;
     const newScore = this.calculateScore(score);
     const newAssertions = assertions + 1;
+    this.updateLocalStorage(newScore, newAssertions);
     this.setState({
       showColor: true,
     });
@@ -59,14 +60,14 @@ class Game extends React.Component {
   }
 
   updateLocalStorage(newScore, newAssertions) {
-    let player = JSON.parse(localStorage.player);
-    // player = {
-    //   name,
-    //   score: newScore,
-    //   assertions: newAssertions,
-    //   gravatarEmail,
-    // };
-    console.log(player);
+    const previousPlayer = JSON.parse(localStorage.player);
+    const player = {
+      name: previousPlayer.name,
+      score: newScore,
+      assertions: newAssertions,
+      gravatarEmail: previousPlayer.gravatarEmail,
+    };
+    localStorage.player = JSON.stringify(player);
   }
   handleClickFalse() {
     this.setState({
