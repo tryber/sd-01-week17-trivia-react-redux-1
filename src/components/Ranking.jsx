@@ -2,26 +2,23 @@ import React, { Component } from 'react';
 import '../css/Ranking.css';
 
 class Ranking extends Component {
+  generateRankingTable() {
+    const ranking = JSON.parse(localStorage.ranking);
+    return ranking.map((position, index) => {
+      return (
+        <div key={position.name} data-testid={`${position.name}-${index}`}>
+          <img src={position.gravatarImg} alt={position.name} />
+          <p>{`${position.name} - ${position.score} pontos`}</p>
+        </div>
+      );
+    });
+  }
+
   render() {
     return (
       <div>
         <h1>Ranking</h1>
-        <span>
-          <img
-            src="https://pbs.twimg.com/media/DzKfUMMX0AEBu75.jpg"
-            alt="teste"
-          />
-          Fonseca
-        </span>
-        <span>
-          <img
-            src="https://pt-static.z-dn.net/files/de3/2deeee3340df53f86d90c44276c9c731.jpg"
-            alt="teste"
-          />
-          Cátia
-        </span>
-        <span>teste</span>
-        <span>teste</span>
+        {this.generateRankingTable()}
       </div>
     );
   }
