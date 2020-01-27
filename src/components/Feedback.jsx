@@ -6,14 +6,14 @@ import '../css/Feedback.css';
 import Header from './Header';
 
 class Feedback extends React.Component {
-  textFeedbackAssertions({ assertions }) {
+  static textFeedbackAssertions({ assertions }) {
     if (assertions < 3) {
       return 'Podia ser melhor...';
     }
     return 'Mandou bem!';
   }
 
-  textFeedbackScore({ score, assertions }) {
+  static textFeedbackScore({ score, assertions }) {
     const text1 = `Você acertou ${assertions} questões!`;
     const text2 = `Um total de ${score} pontos!`;
     return (
@@ -23,7 +23,7 @@ class Feedback extends React.Component {
       </p>
     );
   }
-  btn() {
+  static btn() {
     return (
       <div>
         <Link to="/ranking">
@@ -40,10 +40,10 @@ class Feedback extends React.Component {
       <div>
         <Header />
         <h1 data-testid="feedback-text">
-          {this.textFeedbackAssertions(this.props.finalPoints)}
+          {Feedback.textFeedbackAssertions(this.props.finalPoints)}
         </h1>
-        <p>{this.textFeedbackScore(this.props.finalPoints)}</p>
-        {this.btn()}
+        <p>{Feedback.textFeedbackScore(this.props.finalPoints)}</p>
+        {Feedback.btn()}
       </div>
     );
   }
@@ -54,7 +54,7 @@ Feedback.propTypes = {
     score: PropTypes.number.isRequired,
     assertions: PropTypes.number.isRequired,
     correct: PropTypes.bool.isRequired,
-  }),
+  }).isRequired,
 };
 const mapStateToProps = (state) => ({
   finalPoints: state.gameReducer,
