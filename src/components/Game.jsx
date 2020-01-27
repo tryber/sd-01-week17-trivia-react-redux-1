@@ -28,6 +28,7 @@ class Game extends React.Component {
       questionIndex: 0,
       showColor: false,
       time: 30,
+      shouldReset: false,
     };
   }
 
@@ -57,6 +58,16 @@ class Game extends React.Component {
     this.props.verifyTrue(newScore, newAssertions);
   }
 
+  updateLocalStorage(newScore, newAssertions) {
+    let player = JSON.parse(localStorage.player);
+    // player = {
+    //   name,
+    //   score: newScore,
+    //   assertions: newAssertions,
+    //   gravatarEmail,
+    // };
+    console.log(player);
+  }
   handleClickFalse() {
     this.setState({
       showColor: true,
@@ -113,12 +124,19 @@ class Game extends React.Component {
     this.setState({
       questionIndex: nextIndex,
       showColor: false,
+      shouldReset: true,
     });
   }
 
-  getTime(param) {
+  getTime(param, reset) {
     if (!this.state.showColor) {
       localStorage.setItem('time', param);
+    }
+    if (this.state.shouldReset) {
+      reset();
+      this.setState({
+        shouldReset: false,
+      });
     }
   }
 
@@ -160,10 +178,10 @@ class Game extends React.Component {
       <div>
         <Header />
         <Timer initialTime={30001} direction="backward">
-          {({ getTime }) => (
+          {({ getTime, reset }) => (
             <React.Fragment>
               <Timer.Seconds
-                onChange={this.getTime(Math.floor(getTime() / 1000))}
+                onChange={this.getTime(Math.floor(getTime() / 1000), reset)}
               />{' '}
               segundos
             </React.Fragment>
