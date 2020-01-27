@@ -147,6 +147,7 @@ class Game extends React.Component {
         <Link to="/feedback">
           <button
             type="button"
+            data-testid="btn-next"
             className={this.state.showColor ? 'show-button' : 'hide-button'}
             onClick={() => this.nextQuestion()}
           >
@@ -158,6 +159,7 @@ class Game extends React.Component {
     return (
       <button
         type="button"
+        data-testid="btn-next"
         className={this.state.showColor ? 'show-button' : 'hide-button'}
         onClick={() => this.nextQuestion()}
       >

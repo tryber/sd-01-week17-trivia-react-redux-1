@@ -10,8 +10,8 @@ class Home extends React.Component {
   static sendPlayerToLocalStorage(name, gravatarEmail) {
     const player = {
       name,
-      assertions: '',
-      score: '',
+      assertions: 0,
+      score: 0,
       gravatarEmail,
     };
     localStorage.setItem('player', JSON.stringify(player));
@@ -106,7 +106,6 @@ class Home extends React.Component {
     );
   }
   render() {
-    console.log(this.props.filters);
     if (this.state.shouldRedirect) {
       return <Redirect to="/game" />;
     }
