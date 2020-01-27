@@ -6,7 +6,7 @@ class Ranking extends Component {
     const ranking = JSON.parse(localStorage.ranking);
     return ranking.map((position, index) => (
       <div key={position.name} data-testid={`${position.name}-${index}`}>
-        <img src={position.gravatarImg} alt={position.name} />
+        <img src={position.picture} alt={position.name} />
         <p>{`${position.name} - ${position.score} pontos`}</p>
       </div>
     ));

@@ -61,7 +61,7 @@ class Feedback extends React.Component {
       const outdateStorage = JSON.parse(localStorage.ranking);
       const newPlayer = {
         name: name.name,
-        gravatarImg,
+        picture: gravatarImg,
         score: this.props.finalPoints.score,
       };
       return (localStorage.ranking = JSON.stringify(
@@ -71,7 +71,7 @@ class Feedback extends React.Component {
     return (localStorage.ranking = JSON.stringify([
       {
         name: name.name,
-        gravatarImg,
+        picture: gravatarImg,
         score: this.props.finalPoints.score,
       },
     ]));
