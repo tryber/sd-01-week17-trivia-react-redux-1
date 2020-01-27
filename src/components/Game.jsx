@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Timer from 'react-compound-timer';
 import Header from './Header';
 import { successQuestion, falseQuestion } from '../actions';
 import '../css/Game.css';
@@ -20,22 +22,64 @@ class Game extends React.Component {
     return ordenedAnswers;
   }
 
+  static updateLocalStorage(newScore, newAssertions) {
+    const previousPlayer = JSON.parse(localStorage.player);
+    const player = {
+      name: previousPlayer.name,
+      score: newScore,
+      assertions: newAssertions,
+      gravatarEmail: previousPlayer.gravatarEmail,
+    };
+    localStorage.player = JSON.stringify(player);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       questionIndex: 0,
       showColor: false,
+      time: 30,
+      shouldReset: false,
     };
-    this.handleClickTrue = this.handleClickTrue.bind(this);
-    this.handleClickFalse = this.handleClickFalse.bind(this);
-    this.correctClass = this.correctClass.bind(this);
+  }
+
+  getTime(param, reset) {
+    if (!this.state.showColor) {
+      localStorage.setItem('time', param);
+    }
+    if (this.state.shouldReset) {
+      reset();
+      this.setState({
+        shouldReset: false,
+      });
+    }
+  }
+
+  calculateScore(previousScore) {
+    switch (this.props.questions.results[this.state.questionIndex].difficulty) {
+      case 'easy':
+        return (localStorage.time * 1) + previousScore + 10;
+      case 'medium':
+        return (localStorage.time * 2) + previousScore + 10;
+      case 'hard':
+        return (localStorage.time * 3) + previousScore + 10;
+      default:
+        return 0;
+    }
   }
 
   handleClickTrue() {
+    if (localStorage.time < 1) {
+      return this.handleClickFalse();
+    }
+    const { score, assertions } = this.props;
+    const newScore = this.calculateScore(score);
+    const newAssertions = assertions + 1;
+    Game.updateLocalStorage(newScore, newAssertions);
     this.setState({
       showColor: true,
     });
-    this.props.verifyTrue();
+    return this.props.verifyTrue(newScore, newAssertions);
   }
 
   handleClickFalse() {
@@ -45,23 +89,15 @@ class Game extends React.Component {
     this.props.verifyFalse();
   }
 
-  correctClass() {
-    const { correct } = this.props;
-    if (correct === true) {
-      return 'answer-correct';
-    }
-    return 'answer-incorrect';
-  }
-
   generateAnswers(question) {
     const incorrectAnswers = question.incorrect_answers.map((answer, index) => (
       <button
+        key={answer}
         onClick={() => this.handleClickFalse()}
+        disabled={this.state.showColor}
         type="button"
         className={this.state.showColor ? 'answer-incorrect' : ''}
-        id={answer}
         value={answer}
-        name="answer"
         data-testid={`wrong-answer-${index}`}
       >
         {answer}
@@ -69,61 +105,107 @@ class Game extends React.Component {
     ));
     const correctAnswer = (
       <button
+        key={question.correct_answer}
         onClick={() => this.handleClickTrue()}
+        disabled={this.state.showColor}
         className={this.state.showColor ? 'answer-correct' : ''}
         type="button"
-        name="answer"
         data-testid="correct-awnser"
       >
         {question.correct_answer}
       </button>
     );
-    const allAnswers = [...incorrectAnswers, correctAnswer];
-    return Game.shuffleArray(allAnswers);
+    return Game.shuffleArray([...incorrectAnswers, correctAnswer]);
   }
 
-  // componentDidMount() {
-  //   this.props.loadTriviaData();
-  // }
-
   generateQuestion(questions) {
-    if (questions) {
-      const question = questions[this.state.questionIndex];
-      // const newIndex = this.state.questionIndex + 1;
-      // this.setState({
-      //   questionIndex: newIndex
-      // })
-      return (
-        <div className="game-box">
-          <div className="question">
-            <p className="question-category">{question.category}</p>
-            <p className="question-text">{question.question}</p>
-          </div>
-          <div>{this.generateAnswers(question)}</div>
+    const question = questions[this.state.questionIndex];
+    return (
+      <div className="game-box">
+        <div className="question">
+          <p className="question-category">{question.category}</p>
+          <p className="question-text">{question.question}</p>
         </div>
+        <div>{this.generateAnswers(question)}</div>
+      </div>
+    );
+  }
+
+  nextQuestion() {
+    const previousQuestion = this.state.questionIndex;
+    const nextIndex = previousQuestion + 1;
+    this.setState({
+      questionIndex: nextIndex,
+      showColor: false,
+      shouldReset: true,
+    });
+  }
+
+  generateNextButton(param) {
+    if (param) {
+      return (
+        <Link to="/feedback">
+          <button
+            type="button"
+            className={this.state.showColor ? 'show-button' : 'hide-button'}
+            onClick={() => this.nextQuestion()}
+          >
+            Ver feedback!
+          </button>
+        </Link>
       );
     }
-    return 'Loading questions...';
+    return (
+      <button
+        type="button"
+        className={this.state.showColor ? 'show-button' : 'hide-button'}
+        onClick={() => this.nextQuestion()}
+      >
+        Próxima
+      </button>
+    );
   }
 
   render() {
     const { questions } = this.props;
+    if (!questions.results) {
+      return 'Loading questions...';
+    }
+    if (questions.response_code === 3) {
+      localStorage.removeItem('player');
+      return <Redirect to="/" />;
+    }
     return (
       <div>
         <Header />
-        {this.generateQuestion(questions)}
+        <Timer initialTime={30001} direction="backward">
+          {({ getTime, reset }) => (
+            <React.Fragment>
+              <Timer.Seconds
+                onChange={this.getTime(Math.floor(getTime() / 1000), reset)}
+              />{' '}
+              segundos
+            </React.Fragment>
+          )}
+        </Timer>
+        {this.generateQuestion(questions.results)}
+        {this.state.questionIndex === 4
+          ? this.generateNextButton(true)
+          : this.generateNextButton(false)}
       </div>
     );
   }
 }
+
 const mapStateToProps = (state) => ({
-  questions: state.triviaReducer.data.results,
-  correct: state.gameReducer.correct,
-  // question: state.question.correct,
+  questions: state.triviaReducer.data,
+  score: state.gameReducer.score,
+  assertions: state.gameReducer.assertions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  verifyTrue: () => dispatch(successQuestion()),
+  verifyTrue: (score, assertions) =>
+    dispatch(successQuestion(score, assertions)),
   verifyFalse: () => dispatch(falseQuestion()),
 });
 
@@ -131,7 +213,8 @@ Game.propTypes = {
   questions: PropTypes.arrayOf.isRequired,
   verifyFalse: PropTypes.func.isRequired,
   verifyTrue: PropTypes.func.isRequired,
-  correct: PropTypes.arrayOf.isRequired,
+  score: PropTypes.number.isRequired,
+  assertions: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);
