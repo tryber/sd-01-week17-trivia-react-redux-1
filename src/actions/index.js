@@ -4,10 +4,9 @@
 // //   quest,
 // // })
 
-
 export const successQuestion = (score, assertions) => ({
   type: 'QUESTION_SUCCESS',
-  score, 
+  score,
   assertions,
 });
 

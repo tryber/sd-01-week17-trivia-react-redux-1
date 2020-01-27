@@ -32,14 +32,26 @@ class Game extends React.Component {
     };
   }
 
+  getTime(param, reset) {
+    if (!this.state.showColor) {
+      localStorage.setItem('time', param);
+    }
+    if (this.state.shouldReset) {
+      reset();
+      this.setState({
+        shouldReset: false,
+      });
+    }
+  }
+
   calculateScore(previousScore) {
     switch (this.props.questions.results[this.state.questionIndex].difficulty) {
       case 'easy':
-        return previousScore + 10 + localStorage.time * 1;
+        return (localStorage.time * 1) + previousScore + 10;
       case 'medium':
-        return previousScore + 10 + localStorage.time * 2;
+        return (localStorage.time * 2) + previousScore + 10;
       case 'hard':
-        return previousScore + 10 + localStorage.time * 3;
+        return (localStorage.time * 3) + previousScore + 10;
       default:
         return 0;
     }
@@ -52,14 +64,14 @@ class Game extends React.Component {
     const { score, assertions } = this.props;
     const newScore = this.calculateScore(score);
     const newAssertions = assertions + 1;
-    this.updateLocalStorage(newScore, newAssertions);
+    Game.updateLocalStorage(newScore, newAssertions);
     this.setState({
       showColor: true,
     });
-    this.props.verifyTrue(newScore, newAssertions);
+    return this.props.verifyTrue(newScore, newAssertions);
   }
 
-  updateLocalStorage(newScore, newAssertions) {
+  static updateLocalStorage(newScore, newAssertions) {
     const previousPlayer = JSON.parse(localStorage.player);
     const player = {
       name: previousPlayer.name,
@@ -81,7 +93,7 @@ class Game extends React.Component {
       <button
         key={answer}
         onClick={() => this.handleClickFalse()}
-        disabled={this.state.showColor ? true : false}
+        disabled={this.state.showColor}
         type="button"
         className={this.state.showColor ? 'answer-incorrect' : ''}
         value={answer}
@@ -94,7 +106,7 @@ class Game extends React.Component {
       <button
         key={question.correct_answer}
         onClick={() => this.handleClickTrue()}
-        disabled={this.state.showColor ? true : false}
+        disabled={this.state.showColor}
         className={this.state.showColor ? 'answer-correct' : ''}
         type="button"
         data-testid="correct-awnser"
@@ -102,8 +114,7 @@ class Game extends React.Component {
         {question.correct_answer}
       </button>
     );
-    const allAnswers = [...incorrectAnswers, correctAnswer];
-    return Game.shuffleArray(allAnswers);
+    return Game.shuffleArray([...incorrectAnswers, correctAnswer]);
   }
 
   generateQuestion(questions) {
@@ -127,18 +138,6 @@ class Game extends React.Component {
       showColor: false,
       shouldReset: true,
     });
-  }
-
-  getTime(param, reset) {
-    if (!this.state.showColor) {
-      localStorage.setItem('time', param);
-    }
-    if (this.state.shouldReset) {
-      reset();
-      this.setState({
-        shouldReset: false,
-      });
-    }
   }
 
   generateNextButton(param) {
@@ -172,7 +171,7 @@ class Game extends React.Component {
       return 'Loading questions...';
     }
     if (questions.response_code === 3) {
-      localStorage.clear();
+      localStorage.removeItem('player');
       return <Redirect to="/" />;
     }
     return (
@@ -199,7 +198,6 @@ class Game extends React.Component {
 
 const mapStateToProps = (state) => ({
   questions: state.triviaReducer.data,
-  correct: state.gameReducer.correct,
   score: state.gameReducer.score,
   assertions: state.gameReducer.assertions,
 });
@@ -214,7 +212,6 @@ Game.propTypes = {
   questions: PropTypes.arrayOf.isRequired,
   verifyFalse: PropTypes.func.isRequired,
   verifyTrue: PropTypes.func.isRequired,
-  correct: PropTypes.arrayOf.isRequired,
   score: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
 };

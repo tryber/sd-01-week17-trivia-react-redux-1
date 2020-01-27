@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import MD5 from 'crypto-js/md5';
 import '../css/Header.css';
 
@@ -35,4 +36,7 @@ const mapStateToProps = (state) => ({
   score: state.gameReducer.score,
 });
 
+Header.propTypes = {
+  score: PropTypes.number.isRequired,
+};
 export default connect(mapStateToProps)(Header);
