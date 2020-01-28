@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import '../css/Ranking.css';
 
 class Ranking extends Component {
@@ -12,11 +13,21 @@ class Ranking extends Component {
     ));
   }
 
+  static btn() {
+    return (
+      <div>
+        <Link to="/">
+          <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
+        </Link>
+      </div>
+    );
+  }
   render() {
     return (
       <div>
         <h1>Ranking</h1>
         {Ranking.generateRankingTable()}
+        {Ranking.btn()}
       </div>
     );
   }

@@ -40,9 +40,7 @@ class Feedback extends React.Component {
     return (
       <div>
         <Link to="/ranking">
-          <button className="btn-Ranking">
-            VER RANKING
-          </button>
+          <button className="btn-Ranking">VER RANKING</button>
         </Link>
         <Link to="/">
           <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
@@ -51,7 +49,7 @@ class Feedback extends React.Component {
     );
   }
 
-  componentWillUnmount() {
+  componentDidMount() {
     this.saveRanking();
   }
   saveRanking() {
