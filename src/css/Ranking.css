@@ -1,21 +1,13 @@
 div {
-  background: white;
-  color: black;
-  display: flex;
-  flex-direction: column;
-  height: 474px;
-  padding: 1em;
-  width: 792px;
+  margin: 0 auto;
+  padding: 2em;
+  text-align: center;
 }
 
-span {
-  background: whitesmoke;
-  height: 49px;
-  width: 625px;
-}
-
-img {
-  border-radius: 112.5px;
-  height: 34px;
-  width: 34px;
+.btn-jogarNovamente {
+  background: #86d660;
+  font-size: 2em;
+  height: 83px;
+  margin-top: 1em;
+  width: 444px;
 }
