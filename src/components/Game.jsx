@@ -42,12 +42,15 @@ class Game extends React.Component {
     };
   }
 
-  getTime(param, reset) {
+  getTime(param, reset, pause, resume) {
     if (!this.state.showColor) {
       localStorage.setItem('time', param);
+    } else {
+      pause();
     }
     if (this.state.shouldReset) {
       reset();
+      resume();
       this.setState({
         shouldReset: false,
       });
@@ -57,11 +60,11 @@ class Game extends React.Component {
   calculateScore(previousScore) {
     switch (this.props.questions.results[this.state.questionIndex].difficulty) {
       case 'easy':
-        return (localStorage.time * 1) + previousScore + 10;
+        return localStorage.time * 1 + previousScore + 10;
       case 'medium':
-        return (localStorage.time * 2) + previousScore + 10;
+        return localStorage.time * 2 + previousScore + 10;
       case 'hard':
-        return (localStorage.time * 3) + previousScore + 10;
+        return localStorage.time * 3 + previousScore + 10;
       default:
         return 0;
     }
@@ -166,6 +169,25 @@ class Game extends React.Component {
       </button>
     );
   }
+  timer() {
+    return (
+      <Timer initialTime={30001} direction="backward" data-testid="timer">
+        {({ getTime, reset, pause, resume }) => (
+          <React.Fragment>
+            <Timer.Seconds
+              onChange={this.getTime(
+                Math.floor(getTime() / 1000),
+                reset,
+                pause,
+                resume,
+              )}
+            />{' '}
+            segundos
+          </React.Fragment>
+        )}
+      </Timer>
+    );
+  }
 
   render() {
     const { questions } = this.props;
@@ -179,16 +201,7 @@ class Game extends React.Component {
     return (
       <div>
         <Header />
-        <Timer initialTime={30001} direction="backward" data-testid="timer">
-          {({ getTime, reset }) => (
-            <React.Fragment>
-              <Timer.Seconds
-                onChange={this.getTime(Math.floor(getTime() / 1000), reset)}
-              />{' '}
-              segundos
-            </React.Fragment>
-          )}
-        </Timer>
+        {this.timer()}
         {this.generateQuestion(questions.results)}
         {this.state.questionIndex === 4
           ? this.generateNextButton(true)
