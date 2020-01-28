@@ -60,11 +60,11 @@ class Game extends React.Component {
   calculateScore(previousScore) {
     switch (this.props.questions.results[this.state.questionIndex].difficulty) {
       case 'easy':
-        return localStorage.time * 1 + previousScore + 10;
+        return (localStorage.time * 1) + previousScore + 10;
       case 'medium':
-        return localStorage.time * 2 + previousScore + 10;
+        return (localStorage.time * 2) + previousScore + 10;
       case 'hard':
-        return localStorage.time * 3 + previousScore + 10;
+        return (localStorage.time * 3) + previousScore + 10;
       default:
         return 0;
     }
