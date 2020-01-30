@@ -37,6 +37,11 @@ class Feedback extends React.Component {
       </p>
     );
   }
+
+  componentDidMount() {
+    this.saveRanking();
+  }
+
   btn() {
     return (
       <div>
@@ -52,9 +57,6 @@ class Feedback extends React.Component {
     );
   }
 
-  componentDidMount() {
-    this.saveRanking();
-  }
   saveRanking() {
     const name = JSON.parse(localStorage.player);
     const gravatarImg = localStorage.gravatarIMG;
