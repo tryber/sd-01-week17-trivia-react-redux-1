@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { resetScore } from '../actions';
 import '../css/Ranking.css';
 
 class Ranking extends Component {
@@ -13,11 +16,13 @@ class Ranking extends Component {
     ));
   }
 
-  static btn() {
+  btn() {
     return (
       <div>
         <Link to="/">
-          <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
+          <button onClick={this.props.reset} className="btn-jogarNovamente">
+            JOGAR NOVAMENTE
+          </button>
         </Link>
       </div>
     );
@@ -27,10 +32,17 @@ class Ranking extends Component {
       <div>
         <h1>Ranking</h1>
         {Ranking.generateRankingTable()}
-        {Ranking.btn()}
+        {this.btn()}
       </div>
     );
   }
 }
 
-export default Ranking;
+Ranking.propTypes = {
+  reset: PropTypes.func.isRequired,
+};
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetScore()),
+});
+
+export default connect(null, mapDispatchToProps)(Ranking);
