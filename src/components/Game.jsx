@@ -42,17 +42,22 @@ class Game extends React.Component {
     };
   }
 
-  getTime(param, reset, pause, resume) {
+  getTimeAndSave(getTime, reset, pause, start) {
+    const second = Math.floor(getTime() / 1000);
     if (!this.state.showColor) {
-      localStorage.setItem('time', param);
+      localStorage.setItem('time', second);
+      if (second === 0) {
+        this.handleClickFalse();
+      }
     } else {
       pause();
     }
     if (this.state.shouldReset) {
       reset();
-      resume();
+      start();
       this.setState({
         shouldReset: false,
+        showColor: false,
       });
     }
   }
@@ -71,9 +76,6 @@ class Game extends React.Component {
   }
 
   handleClickTrue() {
-    if (localStorage.time < 1) {
-      return this.handleClickFalse();
-    }
     const { score, assertions } = this.props;
     const newScore = this.calculateScore(score);
     const newAssertions = assertions + 1;
@@ -137,14 +139,14 @@ class Game extends React.Component {
     const previousQuestion = this.state.questionIndex;
     const nextIndex = previousQuestion + 1;
     this.setState({
-      questionIndex: nextIndex,
       showColor: false,
       shouldReset: true,
+      questionIndex: nextIndex,
     });
   }
 
-  generateNextButton(param) {
-    if (param) {
+  generateNextButton(second) {
+    if (second) {
       return (
         <Link to="/feedback">
           <button
@@ -172,14 +174,14 @@ class Game extends React.Component {
   timer() {
     return (
       <Timer initialTime={30001} direction="backward" data-testid="timer">
-        {({ getTime, reset, pause, resume }) => (
+        {({ getTime, reset, pause, start }) => (
           <React.Fragment>
             <Timer.Seconds
-              onChange={this.getTime(
-                Math.floor(getTime() / 1000),
+              onChange={this.getTimeAndSave(
+                getTime,
                 reset,
                 pause,
-                resume,
+                start,
               )}
             />{' '}
             segundos
