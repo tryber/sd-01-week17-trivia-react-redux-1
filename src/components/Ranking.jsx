@@ -20,7 +20,7 @@ class Ranking extends Component {
     return (
       <div>
         <Link to="/">
-          <button onClick={this.props.reset} className="btn-jogarNovamente">
+          <button onClick={this.props.resetScore} className="btn-jogarNovamente">
             JOGAR NOVAMENTE
           </button>
         </Link>
@@ -42,7 +42,7 @@ Ranking.propTypes = {
   reset: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = (dispatch) => ({
-  reset: () => dispatch(resetScore()),
+  resetScore: () => dispatch(resetScore()),
 });
 
 export default connect(null, mapDispatchToProps)(Ranking);
