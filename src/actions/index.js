@@ -14,6 +14,10 @@ export const falseQuestion = () => ({
   type: 'QUESTION_FALSE',
 });
 
+export const resetScore = () => ({
+  type: 'RESET',
+});
+
 export const loadDataSucess = (data) => ({
   type: 'LOAD_API_SUCESS',
   data,

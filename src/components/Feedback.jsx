@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { resetScore } from '../actions';
 import '../css/Feedback.css';
 import Header from './Header';
 
@@ -36,22 +37,26 @@ class Feedback extends React.Component {
       </p>
     );
   }
-  static btn() {
+
+  componentDidMount() {
+    this.saveRanking();
+  }
+
+  btn() {
     return (
       <div>
         <Link to="/ranking">
           <button className="btn-Ranking">VER RANKING</button>
         </Link>
         <Link to="/">
-          <button className="btn-jogarNovamente">JOGAR NOVAMENTE</button>
+          <button onClick={this.props.reset} className="btn-jogarNovamente">
+            JOGAR NOVAMENTE
+          </button>
         </Link>
       </div>
     );
   }
 
-  componentDidMount() {
-    this.saveRanking();
-  }
   saveRanking() {
     const name = JSON.parse(localStorage.player);
     const gravatarImg = localStorage.gravatarIMG;
@@ -82,7 +87,7 @@ class Feedback extends React.Component {
           {Feedback.textFeedbackAssertions(this.props.finalPoints)}
         </h1>
         <p>{Feedback.textFeedbackScore(this.props.finalPoints)}</p>
-        {Feedback.btn()}
+        {this.btn()}
       </div>
     );
   }
@@ -94,8 +99,13 @@ Feedback.propTypes = {
     assertions: PropTypes.number.isRequired,
     correct: PropTypes.bool.isRequired,
   }).isRequired,
+  reset: PropTypes.func.isRequired,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  reset: () => dispatch(resetScore()),
+});
 const mapStateToProps = (state) => ({
   finalPoints: state.gameReducer,
 });
-export default connect(mapStateToProps)(Feedback);
+export default connect(mapStateToProps, mapDispatchToProps)(Feedback);
