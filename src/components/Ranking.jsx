@@ -39,7 +39,7 @@ class Ranking extends Component {
 }
 
 Ranking.propTypes = {
-  reset: PropTypes.func.isRequired,
+  resetScore: PropTypes.func.isRequired,
 };
 const mapDispatchToProps = (dispatch) => ({
   resetScore: () => dispatch(resetScore()),
